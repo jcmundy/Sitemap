@@ -9,8 +9,8 @@
 // default is to detect automatically
 
 $nav = new Omeka_Navigation;
-$nav->loadAsOption(Omeka_Navigation::PUBLIC_NAVIGATION_MAIN_OPTION_NAME);
-$nav->addPagesFromFilter(Omeka_Navigation::PUBLIC_NAVIGATION_MAIN_FILTER_NAME);
+// $nav->loadAsOption(Omeka_Navigation::PUBLIC_NAVIGATION_MAIN_OPTION_NAME);
+// $nav->addPagesFromFilter(Omeka_Navigation::PUBLIC_NAVIGATION_MAIN_FILTER_NAME);
 
 $collections = get_db()->getTable('Collection')->findAll();
 foreach($collections as $collection) {
@@ -23,6 +23,34 @@ foreach($collections as $collection) {
     ));
     
     $nav->addPage($page);
+}
+
+$items = get_db()->getTable('Item')->findBy(
+    array('sort_field' => 'added', 'sort_dir' => 'a')
+);
+foreach($items as $item) {
+    $page = new Omeka_Navigation_Page_Mvc(array(
+        'label'      => metadata($item,array('Dublin Core','Title')),
+        'route'      => 'id',
+        'action'     => 'show',
+        'controller' => 'items',
+        'params'     => array('id' => $item->id)
+    ));
+
+    $nav->addPage($page);
+}
+
+if(plugin_is_active('SimplePages')){
+    $simples = get_db()->getTable('SimplePagesPage')->findAll();
+    foreach($simples as $simple) {
+        $page = new Omeka_Navigation_Page_Mvc(array(
+            'route'      => 'simple_pages_show_page_' . $simple->id,
+            'action'     => '',
+            'controller' => 'page',
+            'params'     => array('slug' => $simple->slug)
+        ));
+        $nav->addPage($page);
+    }
 }
 
 if(plugin_is_active('ExhibitBuilder')){
