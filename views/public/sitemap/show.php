@@ -56,13 +56,30 @@ if(plugin_is_active('SimplePages')){
 if(plugin_is_active('ExhibitBuilder')){
     $exhibits = get_db()->getTable('Exhibit')->findAll();
     foreach($exhibits as $exhibit) {
-        $page = new Omeka_Navigation_Page_Mvc(array(
-            'route'      => 'exhibitSimple',
-            'action'     => 'show',
-            'controller' => 'exhibits',
-            'params'     => array('slug' => $exhibit->slug)
-        ));
-        $nav->addPage($page);
+			if($exhibit->public == 1) {
+      $exhibiturl = WEB_ROOT . "/exhibits/show/" . $exhibit->slug;
+      $page = new Omeka_Navigation_Page_Mvc(array(
+          'route'      => 'exhibitSimple',
+          'action'     => 'show',
+          'controller' => 'exhibits',
+          'params'     => array('slug' => $exhibit->slug)
+      ));
+      $nav->addPage($page);
+      $subpages = get_db()->getTable('ExhibitPage')->findall();
+        foreach($subpages as $subpage) {
+          if ($subpage->exhibit_id == $exhibit->id) {
+            $sectionurl =  $exhibit->slug . '/' . $subpage->slug;
+            $page = new Omeka_Navigation_Page_Mvc(array(
+              'route'  => 'exhibitSimple',
+              'action' => '',
+              'controller' => 'exhibits',
+              'params' => array('slug' => $sectionurl),
+              'encode_url' => FALSE)
+            );
+            $nav->addPage($page);
+            }
+          }
+        }
     }
 }
 
