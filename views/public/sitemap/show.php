@@ -83,5 +83,38 @@ if(plugin_is_active('ExhibitBuilder')){
     }
 }
 
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'items browse short', 'controller'=>'items'));
+$nav->addPage($page);
+
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'exhibits browse short', 'controller'=>'exhibits'));
+$nav->addPage($page);
+
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'items browse', 'controller'=>'items', 'action'=>'browse'));
+$nav->addPage($page);
+
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'exhibits browse', 'controller'=>'exhibits', 'action'=>'browse'));
+$nav->addPage($page);
+
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'items search', 'controller'=>'items', 'action'=>'search'));
+$nav->addPage($page);
+
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'items tags', 'controller'=>'items', 'action'=>'tags'));
+$nav->addPage($page);
+
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'contact', 'controller'=>'contact'));
+$nav->addPage($page);
+
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'contact alternate', 'controller'=>'contact', 'action'=>'alternate'));
+$nav->addPage($page);
+
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'users login', 'controller'=>'users', 'action'=>'login'));
+$nav->addPage($page);
+
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'users forgot', 'controller'=>'users', 'action'=>'forgot-password'));
+$nav->addPage($page);
+
+
+
+
 echo $this->navigation()->sitemap($nav);
 ?>
