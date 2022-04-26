@@ -83,6 +83,9 @@ if(plugin_is_active('ExhibitBuilder')){
     }
 }
 
+$page = new Omeka_Navigation_Page_Mvc(array('label'=>'home', 'controller'=>''));
+$nav->addPage($page);
+
 $page = new Omeka_Navigation_Page_Mvc(array('label'=>'items browse short', 'controller'=>'items'));
 $nav->addPage($page);
 
